@@ -90,7 +90,7 @@ int top(Stack S){
 	return S.data[S.size - 1];
 }
 
-int pop(Stack *S){
+void pop(Stack *S){
 	S->size--;
 }
 

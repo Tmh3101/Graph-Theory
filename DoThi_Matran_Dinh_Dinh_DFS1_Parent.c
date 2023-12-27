@@ -94,11 +94,14 @@ void pop(Stack *S){
 	S->size--;
 }
 
-List depth_first_search(Graph *G, int n){
+List depth_first_search(Graph *G, int x, int parent[]){
 	//dua mot dinh vao ngan xep
 	Stack S;
 	make_null_stack(&S);
-	push_stack(&S, n);
+	push_stack(&S, x);
+	parent[x] = 0;
+	
+	
 	List list_dfs;
 	make_null_list(&list_dfs);
 	
@@ -127,7 +130,8 @@ List depth_first_search(Graph *G, int n){
 		for(i = 1; i <= list.size; i++){
 			int v = element_at(list, i);
 			if(mark[v] == 0){
-				push_stack(&S, v); 
+				push_stack(&S, v);
+				parent[v] = u;
 			}
 		}
 	}
@@ -140,29 +144,35 @@ int main(){
 	int n, m; //n - so dinh, m - so cung
 	scanf("%d%d", &n, &m);
 	init_Graph(&G, n);
-	int e, u, v;
+	int e, u, v, i, j;
 	for(e = 1; e <= m; e++){
 		scanf("%d%d", &u, &v);
 		add_edge(&G, u, v);
 	}
 	
-	int mark_dfs[MAX_Vectices], i, j;
+	int parent[MAX_Vectices];
+	for(i = 1; i <= G.n; i++){
+		parent[i] = -1;
+	}
+	
+	int mark_dfs[MAX_Vectices];
 	for(i = 1; i <= G.n; i++){
 		mark_dfs[i] = 0;
 	}
 	
 	for(i = 1; i <= G.n; i++){
 		if(mark_dfs[i] == 0){
-			List dfs = depth_first_search(&G, i);
+			List dfs = depth_first_search(&G, i, parent);
 			for(j = 1; j <= dfs.size; j++){
-				printf("%d\n", element_at(dfs, j));
+				//printf("%d\n", element_at(dfs, j));
 				mark_dfs[element_at(dfs, j)] = 1;
 			}			
 		}
 	}
 	
-	
-
+	for(u = 1; u <= G.n; u++){
+		printf("%d %d\n", u, parent[u]);
+	}
 	
 	return 0;
 }
