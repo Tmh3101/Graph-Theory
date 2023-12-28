@@ -1,6 +1,7 @@
 #include <stdio.h>
 #define MAX_Vertices 20
 #define MAX_Length 20
+#define MAX_Element 40
 
 
 typedef struct {
@@ -65,11 +66,65 @@ List neighbors(Graph *G, int x){
 	return L;
 }
 
+typedef struct {
+	int data[MAX_Element];
+	int front, rear;
+} Queue;
+
+void make_null_Queue(Queue *Q){
+	Q->front = 0;
+	Q->rear = -1;
+}
+
+int empty_Queue(Queue Q){
+	return Q.front > Q.rear;
+}
+
+void push_Queue(Queue *Q, int x){
+	Q->rear++;
+	Q->data[Q->rear] = x;
+}
+
+int pop_Queue(Queue *Q){
+	int res = Q->data[Q->front];
+	Q->front++;
+	return res;
+}
+
+List breach_first_search(Graph *G, int x){
+	Queue Q;
+	make_null_Queue(&Q);
+	
+	int mark[MAX_Vertices];
+	int i;
+	for(i = 1; i <= G->n; i++){
+		mark[i] = 0;
+	}
+	push_Queue(&Q, x);
+	
+	List L_bfs;
+	make_null(&L_bfs);
+	
+	while(!empty_Queue(Q)){
+		int u = pop_Queue(&Q);
+		if(mark[u] == 1) continue;
+		push_back(&L_bfs, u);
+		mark[u] = 1;
+		
+		List L = neighbors(G, u);
+		for(i = 1; i <= L.size; i++){
+			int v = element_at(L, i);
+			if(mark[v] == 0) push_Queue(&Q, v);
+		}
+	}
+	return L_bfs;
+}
+
 int main(){
 
 	Graph G;
 	int n, m;
-	freopen("DFS.txt", "r", stdin);
+	freopen("BFS.txt", "r", stdin);
 	scanf("%d%d", &n, &m);
 	init_Graph(&G, n);
 	
@@ -79,12 +134,20 @@ int main(){
 		add_edge(&G, u, v);
 	}
 	
-	int i, j;
-	for(i = 1; i <= n; i++){
-		for(j = 1; j <= n; j++){
-			printf("%d ", G.A[i][j]);
-		}
-		printf("\n");
+	int mark_bfs[MAX_Vertices], i;
+	for(i = 1; i <= G.n; i++){
+		mark_bfs[i] = 0;
+	}
+	
+	for(u = 1; u <= G.n; u++){
+		if(mark_bfs[u] == 0){
+			List L = breach_first_search(&G, u);
+			for(i = 1; i <= L.size; i++){
+				int v = element_at(L, i);
+				printf("%d\n", v);
+				mark_bfs[v] = 1;
+			}
+		}	
 	}
 
 	return 0;
