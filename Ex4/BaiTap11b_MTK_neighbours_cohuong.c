@@ -18,12 +18,7 @@ void init_graph(Graph *pG, int n){
 }
 
 void add_edge(Graph *pG, int u, int v){
-	if(u == v) {
-		pG->A[u][v] += 1;
-	} else {
-		pG->A[u][v] += 1;
-		pG->A[v][u] += 1;
-	}
+	pG->A[u][v] += 1;
 	pG->m++;	
 }
 
@@ -38,9 +33,7 @@ int degree(Graph *pG, int u){
 void neighbours(Graph *pG, int u){
 	int i, j;
 	for(i = 1; i <= pG->n; i++){
-		for(j = 1; j <= pG->A[u][i]; j++){
-			printf("%d ", i);
-		}
+		if(pG->A[u][i] != 0) printf(" %d", i);
 	}
 	printf("\n");
 }
@@ -48,7 +41,7 @@ void neighbours(Graph *pG, int u){
 
 int main(){
 	Graph G;
-	freopen("dothi.txt", "r", stdin);
+//	freopen("dothi.txt", "r", stdin);
 	int n, m;
 	scanf("%d%d", &n, &m);
 	init_graph(&G, n);
@@ -58,16 +51,16 @@ int main(){
 		scanf("%d%d", &u, &v);
 		add_edge(&G, u, v);
 	}
-	
-	for(u = 1; u <= G.n; u++){
-		for(v = 1; v <= G.n; v++){
-			printf("%d ", G.A[u][v]);
+	int j;
+	for(i = 1; i <= G.n; i++){
+		for(j = 1; j <= G.n; j++){
+			printf("%d ", G.A[i][j]);
 		}
 		printf("\n");
 	}
 	
 	for(i = 1; i <= G.n; i++){
-		printf("neigbours(%d): ", i);
+		printf("neighbours(%d) =", i);
 		neighbours(&G, i);
 	}
 	

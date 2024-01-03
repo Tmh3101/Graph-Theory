@@ -32,13 +32,13 @@ int degree(Graph *pG, int u){
 	for(i = 1; i <= pG->n; i++){
 		deg += pG->A[u][i];
 	}
-	return deg;
+	return deg + pG->A[u][u];
 }
 
 
 int main(){
 	Graph G;
-	freopen("dothi.txt", "r", stdin);
+	//freopen("dothi.txt", "r", stdin);
 	int n, m;
 	scanf("%d%d", &n, &m);
 	init_graph(&G, n);

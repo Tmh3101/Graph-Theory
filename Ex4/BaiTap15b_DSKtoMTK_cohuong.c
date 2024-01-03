@@ -18,12 +18,7 @@ void init_graph(Graph *pG, int n){
 }
 
 void add_edge(Graph *pG, int u, int v){
-	if(u == v) {
-		pG->A[u][v] += 1;
-	} else {
-		pG->A[u][v] += 1;
-		pG->A[v][u] += 1;
-	}
+	pG->A[u][v] += 1;
 	pG->m++;	
 }
 
@@ -46,20 +41,23 @@ void neighbours(Graph *pG, int u){
 
 int main(){
 	Graph G;
-	freopen("dothi.txt", "r", stdin);
-	int n, m;
-	scanf("%d%d", &n, &m);
+	int n;
+	scanf("%d", &n);
 	init_graph(&G, n);
 	
-	int i, u, v;
-	for(i = 0; i < m; i++){
-		scanf("%d%d", &u, &v);
-		add_edge(&G, u, v);
+	int u, v;
+	for(u = 1; u <= n; u++){
+		do {
+			scanf("%d", &v);
+			add_edge(&G, u, v);
+		} while (v != 0);
 	}
 	
-	for(i = 1; i <= G.n; i++){
-		printf("neighbours(%d):", i);
-		neighbours(&G, i);
+	for(u = 1; u <= n; u++){
+		for(v = 1; v <= n; v++){
+			printf("%d ", G.A[u][v]);
+		}
+		printf("\n");
 	}
 	
 	return 0;

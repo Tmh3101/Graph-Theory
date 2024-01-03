@@ -39,6 +39,7 @@ int main(){
 		add_edge(&G, u, v);
 	}
 	
+	printf("Ma tran ke:\n");
 	for(u = 1; u <= G.n; u++){
 		for(v = 1; v <= G.n; v++){
 			printf("%d ", G.A[u][v]);
