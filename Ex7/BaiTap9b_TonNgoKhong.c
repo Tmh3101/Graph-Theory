@@ -41,13 +41,6 @@ int element_at(List *L, int i){
 	return L->data[i - 1];
 }
 
-void merge_list(List *L1, List *L2){
-	int i;
-	for(i = 1; i <= L2->size; i++){
-		push_back(L1, element_at(L2, i));
-	}
-}
-
 List neighbours(Graph *pG, int u){
 	int i;
 	List L;
@@ -124,29 +117,23 @@ int main(){
 		scanf("%d%d", &u, &v);
 		add_edge(&G, u, v);
 	}
-
-
+	
 	for(i = 1; i <= n; i++){
 		mark[i] = 0;
 	}
-
-	List bfs;
-	make_null_list(&bfs);
-	int cnt = 0;
-	for(i = 1; i <= n; i++){
-		if(mark[i] == 0) {
-			List l = BFS(&G, i);
-			merge_list(&bfs, &l);
-			cnt++;
-		}
-	}
-
+	
+	List bfs = BFS(&G, 1);
 	for(i = 1; i <= bfs.size; i++){
 		printf("%d ", element_at(&bfs, i));
 	}
 
-	printf("\nSo bo phan lien thong: %d", cnt);
-	
+	for(i = 1; i <= n; i++){
+		if(mark[i] == 0) {
+			printf("\nNO");
+			return 0;
+		}
+	}
+	printf("\nYES");
 	
 	return 0;
 }

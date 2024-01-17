@@ -125,27 +125,20 @@ int main(){
 		add_edge(&G, u, v);
 	}
 
+	int s;
+	scanf("%d", &s);
 
 	for(i = 1; i <= n; i++){
 		mark[i] = 0;
 	}
 
-	List bfs;
-	make_null_list(&bfs);
-	int cnt = 0;
-	for(i = 1; i <= n; i++){
-		if(mark[i] == 0) {
-			List l = BFS(&G, i);
-			merge_list(&bfs, &l);
-			cnt++;
-		}
-	}
+	List bfs = BFS(&G, s);
 
 	for(i = 1; i <= bfs.size; i++){
 		printf("%d ", element_at(&bfs, i));
 	}
 
-	printf("\nSo bo phan lien thong: %d", cnt);
+	printf("\nSo dinh phan lien thong chua dinh %d: %d", s, bfs.size);
 	
 	
 	return 0;
