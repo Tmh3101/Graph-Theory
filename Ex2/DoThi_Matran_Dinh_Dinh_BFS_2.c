@@ -108,7 +108,7 @@ List breach_first_search(Graph *G, int x){
 	while(!empty_Queue(Q)){
 		int u = pop_Queue(&Q);
 		if(mark[u] == 1) continue;
-		push_back(&L_bfs, u);
+		push_back(&L_bfs, u); //DUYET
 		mark[u] = 1;
 		
 		List L = neighbors(G, u);
