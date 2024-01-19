@@ -120,7 +120,6 @@ void SCC(Graph *pG, int u){
 			printf("%d ", top(&tmp));
 			pop(&tmp);
 		}
-		//printf(" - %d %d", num[u], min_num[u]);
 		printf("\n");
 	}
 }
