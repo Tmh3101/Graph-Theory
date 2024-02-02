@@ -21,8 +21,8 @@ void init_graph(Graph *pG, int n){
 }
 
 void add_edge(Graph *pG, int u, int v, int w){
+	if(w < 0) return;
 	pG->L[u][v] = w;
-	pG->L[v][u] = w;
 }
 
 
@@ -55,11 +55,6 @@ void MooreDijkstra(Graph *pG, int s){
 			}
 		}
 	}
-
-	for(u = 1; u <= pG->n; u++){
-		if(pi[u] == oo) pi[u] = -1;
-	}
-
 }
 
 

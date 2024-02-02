@@ -1,7 +1,8 @@
 #include <stdio.h>
+#include <limits.h>
 
 #define MAXN 100
-#define NOEDGE 0
+#define NOEDGE INT_MIN
 #define oo 99999
 
 typedef struct {
@@ -40,7 +41,7 @@ void MooreDijkstra(Graph *pG, int s){
 	for(it = 1; it < pG->n; it++){
 		min_pi = oo;
 		for(j = 1; j <= pG->n; j++){
-			if(mark[j] == NOEDGE && pi[j] < min_pi){
+			if(mark[j] == 0 && pi[j] < min_pi){
 				min_pi = pi[j];
 				u = j;
 			}

@@ -22,7 +22,6 @@ void init_graph(Graph *pG, int n){
 
 void add_edge(Graph *pG, int u, int v, int w){
 	pG->L[u][v] = w;
-	pG->L[v][u] = w;
 }
 
 
@@ -55,20 +54,33 @@ void MooreDijkstra(Graph *pG, int s){
 			}
 		}
 	}
-
-	for(u = 1; u <= pG->n; u++){
-		if(pi[u] == oo) pi[u] = -1;
-	}
-
 }
 
+void print_path(int s, int t){
+	int path[MAXN], n = 0;
+	path[n++] = t;
 
+	int parent = p[t];
+	while(parent != s){
+		if(parent == 0) return;
+		path[n++] = parent;
+		parent = p[parent];
+	}
+	path[n] = s;
+
+	int i;
+	for(i = n; i > 0; i--){
+		printf("%d -> ", path[i]);
+	}
+	printf("%d\n", path[0]);
+
+}
 
 
 int main(){
 
 	Graph G;
-	int m, n, u, v, w, e;
+	int m, n, u, v, w, e, s, t;
 	freopen("dothi.txt", "r", stdin);
 	scanf("%d%d", &n, &m);
 	init_graph(&G, n);
@@ -78,9 +90,10 @@ int main(){
 		add_edge(&G, u, v, w);
 	}
 
-	MooreDijkstra(&G, 1);
+	scanf("%d%d", &s, &t);
+	MooreDijkstra(&G, s);
 
-	printf("%d", pi[n]);
+	print_path(s, t);
 
 	return 0;
 }
