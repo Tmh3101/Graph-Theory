@@ -86,8 +86,8 @@ typedef struct{
 int main(){
 
 	Graph G;
-	int m, n, i, j, u, v;
-	//freopen("dothi.txt", "r", stdin);
+	int m, n, i, j;
+	freopen("dothi.txt", "r", stdin);
 	scanf("%d%d", &m, &n);
 	init_graph(&G, n * m);
 
@@ -99,11 +99,11 @@ int main(){
 		}
 	}
 
-	int key = 1;
+	int cnt = 1;
 	for(i = 1; i <= m; i++){
 		for(j = 1; j <= n; j++){
 			scanf("%d", &input[i][j].value);
-			input[i][j].key = key++;
+			input[i][j].key = cnt++;
 		}
 	}
 
@@ -111,25 +111,20 @@ int main(){
 
 	for(i = 1; i <= m; i++){
 		for(j = 1; j <= n; j++){
-			add_edge(&G, input[i][j].key, input[i][j - 1].key, input[i][j - 1].value);
-			add_edge(&G, input[i][j].key, input[i][j + 1].key, input[i][j + 1].value);
-			add_edge(&G, input[i][j].key, input[i - 1][j].key, input[i - 1][j].value);
-			add_edge(&G, input[i][j].key, input[i + 1][j].key, input[i + 1][j].value);
+			
+			int di[] = {-1, 1, 0, 0};
+			int dj[] = {0, 0, -1, 1};
+			
+			int k;
+			for(k = 0; k < 4; k++){
+				add_edge(&G, input[i][j].key, input[i + di[k]][j + dj[k]].key, input[i + di[k]][j + dj[k]].value);
+			}		
 		}
 	}
 
-	// for(u = 1; u <= G.n; u++){
-	// 	for(v = 1; v <= G.n; v++){
-	// 		printf("%d ", G.L[u][v]);
-	// 	}
-	// 	printf("\n");
-	// }
-
 	MooreDijkstra(&G, 1);
 
-	printf("%d\n", pi[m * n]);
-	//print_path(1, m * n);
-
+	printf("%d", pi[m * n]);
 
 	return 0;
 }
