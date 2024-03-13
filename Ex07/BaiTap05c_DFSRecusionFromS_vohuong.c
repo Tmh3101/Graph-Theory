@@ -60,7 +60,7 @@ void merge_list(List *L1, List *L2){
 
 
 int mark[MAX_N];
-List BFS(Graph *G, int s){
+List DFS(Graph *G, int s){
 	List res;
 	make_null_list(&res);
 
@@ -71,7 +71,7 @@ List BFS(Graph *G, int s){
 	for(i = 1; i <= list.size; i++){
 		int v = element_at(&list, i);
 		if(mark[v] == 0) {
-			List l = BFS(G, v);
+			List l = DFS(G, v);
 			merge_list(&res, &l);
 		}
 	}
@@ -100,10 +100,11 @@ int main(){
 		mark[i] = 0;
 	}
 	
-	List bfs = BFS(&G, s);
+	List dfs = DFS(&G, s);
 
-	for(i = 1; i <= bfs.size; i++){
-		printf("%d ", element_at(&bfs, i));
+	for(i = 1; i <= dfs.size; i++){
+		printf("%d ", element_at(&dfs, i));
 	}
+	
 	return 0;
 }

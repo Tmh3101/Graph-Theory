@@ -92,14 +92,6 @@ int main(){
 		}
 	}
 	
-	for(i = 0; i < m; i++){
-		for(j = 0; j < n; j++){
-			printf("%d ", matrix[i][j]);
-		}
-		printf("\n");
-	}
-	printf("\n");
-	
 	
 	for(u = 1; u <= m * n; u++){
 		i = (u - 1) / n;
@@ -115,7 +107,6 @@ int main(){
 			
 			if(ii >= 0 && ii < m && jj >= 0 && jj < n){
 				v = ii * n + jj + 1;
-				//printf("%d\n", matrix[ii][jj]);
 				add_edge(&G, u, v, matrix[ii][jj]);
 			}
 		
