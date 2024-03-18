@@ -129,8 +129,8 @@ int main(){
 
 	Graph G;
 
-	freopen("bttc_dapm.txt", "r", stdin);
-	int n, m, u, v, e, i;
+	//freopen("dothi.txt", "r", stdin);
+	int n, u, v, i;
 
 	scanf("%d", &n);
  
@@ -140,13 +140,10 @@ int main(){
 
 	for(u = 1; u <= n; u++){
 		scanf("%d", &d[u]);
-	}
-
-	scanf("%d", &m);
-
-	for(e = 1; e <= m; e++){
-		scanf("%d%d", &u, &v);
-		add_edge(&G, u, v);
+		do {
+			scanf("%d", &v);
+			if(v != 0) add_edge(&G, v, u);
+		} while (v != 0);
 	}
 
 	for(u = 1; u <= G.n - 2; u++){
@@ -172,21 +169,28 @@ int main(){
 	}
 
 	//tinh T[u] - thoi gian tre nhat
-	// int T[MAXN];
-	// T[beta] = t[beta];
+	int T[MAXN];
+	T[beta] = t[beta];
 
-	// for(i = L.size - 1; i >= 1; i--){ //khong can tinh beta
-	// 	u = element_at(&L, i);
-	// 	T[u] = +oo;
+	for(i = L.size - 1; i >= 1; i--){ //khong can tinh beta
+		u = element_at(&L, i);
+		T[u] = +oo;
 
-	// 	for(v = 1; v <= G.n; v++){
-	// 		if(G.A[u][v] != 0) {
-	// 			T[u] = min(T[u], T[v] - d[u]);
-	// 		}
-	// 	}
-	// }
+		for(v = 1; v <= G.n; v++){
+			if(G.A[u][v] != 0) {
+				T[u] = min(T[u], T[v] - d[u]);
+			}
+		}
+	}
+	
+	int x, y;
+	scanf("%d%d",&x, &y);
 
-	printf("%d", t[beta]);
+//	for(u = 1; u <= G.n - 2; u++){
+//		printf("%d-%d\n", t[u], T[u]);
+//	}
+	
+	printf("%s", (y >= t[x] && y <= T[x]) ? "YES" : "NO");
 
 	return 0;
 }
