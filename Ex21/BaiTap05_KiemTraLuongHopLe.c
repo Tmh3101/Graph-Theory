@@ -30,7 +30,7 @@ int main(){
 
 	Graph G;
 	int n, m, u, v, e, c, f;
-	//freopen("data_BT5.txt", "r", stdin);
+	freopen("data_BT5.txt", "r", stdin);
 	scanf("%d%d", &n, &m);
 
 	init_graph(&G, n);
@@ -40,7 +40,11 @@ int main(){
 		add_edge(&G, u, v, c, f);
 	}
 	
+	int out = 0, in = 0;
 	for(u = 1; u <= n; u++){
+		out += G.F[1][v];
+		in += G.F[v][n];
+		
 		int F_in = 0, F_out = 0;
 		for(v = 1; v <= n; v++){
 			
@@ -53,12 +57,16 @@ int main(){
 				F_in += G.F[v][u];
 				F_out += G.F[u][v];
 			} 
-		
 		}
 		if(F_in != F_out){
 			printf("NO");
 			return 0;
 		}
+	}
+	
+	if(out != in){
+		printf("NO");
+		return 0;
 	}
 
 	printf("YES");
