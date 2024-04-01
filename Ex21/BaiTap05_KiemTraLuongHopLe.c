@@ -41,12 +41,6 @@ int main(){
 	}
 	
 	for(u = 1; u <= n; u++){
-		for(v = 1; v <= n; v++){
-		
-		}
-	}
-	
-	for(u = 1; u <= n; u++){
 		int F_in = 0, F_out = 0;
 		for(v = 1; v <= n; v++){
 			
