@@ -1,22 +1,21 @@
 #include <stdio.h>
-
 #define MAXN 100
-#define NO_EDGE 0
+#define NOEDGE 0
 #define oo 99999
 
 typedef struct {
-	int C[MAXN][MAXN];//kha nang thong qua
-	int F[MAXN][MAXN];//luong qua cung
-	int n; //so dinh
+	int C[MAXN][MAXN];
+	int F[MAXN][MAXN];
+	int n;
 } Graph;
 
 void init_graph(Graph *pG, int n){
 	pG->n = n;
-	int i, j;
-	for(i = 1; i <= n; i++){
-		for(j = 1; j <= n; j++){
-			pG->C[i][j] = NO_EDGE;
-			pG->F[i][j] = NO_EDGE;
+	int u, v;
+	for(u = 1; u <= n; u++){
+		for(v = 1; v <= n; v++){
+			pG->C[u][v] = NOEDGE;
+			pG->F[u][v] = NOEDGE;
 		}
 	}
 }
@@ -39,12 +38,12 @@ int empty(Queue *pQ){
 	return pQ->front > pQ->rear;
 }
 
-void enqueue(Queue *pQ, int x) {
-	pQ->data[++(pQ->rear)] = x;
+void en_queue(Queue *pQ, int x){
+	pQ->data[++pQ->rear] = x;
 }
 
-int dequeue(Queue *pQ){
-	return pQ->data[(pQ->front)++];
+int de_queue(Queue *pQ){
+	return pQ->data[pQ->front++];
 }
 
 int min(int a, int b){
@@ -52,50 +51,46 @@ int min(int a, int b){
 }
 
 typedef struct {
-	int dir;
-	int p;
-	int sigma;
+	int dir, p, sigma;
 } Label;
 
 Label labels[MAXN];
 
 int FordFulkerson(Graph *pG, int s, int t){
 	int max_flow = 0;
-	int u, v;
 
-	Queue Q;
 	do {
 
-		//B1: xoa cac nhan va gan nhan cho dinh s, dua s vao queue
+		int u, v;
 		for(u = 1; u <= pG->n; u++){
 			labels[u].dir = 0;
 		}
+
 		labels[s].dir = 1;
 		labels[s].p = s;
 		labels[s].sigma = oo;
 
+		Queue Q;
 		make_null_queue(&Q);
-		enqueue(&Q, s);
+		en_queue(&Q, s);
 
-		//B2: Lap gan nhan cho cac dinh tim duong tang luong
 		int found = 0;
 		while(!empty(&Q)){
-
-			u = dequeue(&Q);
+			u = de_queue(&Q);
 			for(v = 1; v <= pG->n; v++){
-				//cung thuan
-				if(pG->C[u][v] != NO_EDGE && labels[v].dir == 0 && pG->F[u][v] < pG->C[u][v]){
+
+				if(pG->C[u][v] != NOEDGE && labels[v].dir == 0 && pG->F[u][v] < pG->C[u][v]){
 					labels[v].dir = 1;
 					labels[v].p = u;
 					labels[v].sigma = min(labels[u].sigma, pG->C[u][v] - pG->F[u][v]);
-					enqueue(&Q, v);
+					en_queue(&Q, v);
 				}
-				//cung nghich
-				else if(pG->C[v][u] != NO_EDGE && labels[v].dir == 0 && pG->F[v][u] > 0){						
+
+				if(pG->C[v][u] != NOEDGE && labels[v].dir == 0 && pG->F[v][u] > 0){
 					labels[v].dir = -1;
 					labels[v].p = u;
-					labels[v].sigma = min(labels[u].sigma, pG->F[v][u]);
-					enqueue(&Q, v);
+					labels[v].sigma = min(labels[u].sigma, pG->F[u][v]);
+					en_queue(&Q, v);
 				}
 			}
 
@@ -105,11 +100,9 @@ int FordFulkerson(Graph *pG, int s, int t){
 			}
 		}
 
-		//B3: tang luong
 		if(found == 1){
 			int sigma = labels[t].sigma;
 			u = t;
-
 			while(u != s){
 				int p = labels[u].p;
 				if(labels[u].dir == 1) pG->F[p][u] += sigma;
@@ -118,9 +111,7 @@ int FordFulkerson(Graph *pG, int s, int t){
 			}
 
 			max_flow += sigma;
-
 		} else break;
-
 
 	} while(1);
 
@@ -128,21 +119,31 @@ int FordFulkerson(Graph *pG, int s, int t){
 }
 
 int main(){
-
+	freopen("graph.txt", "r", stdin);
 	Graph G;
-	int n, m, u, v, e, c;
-	freopen("data.txt", "r", stdin);
+
+	int n, m;
 	scanf("%d%d", &n, &m);
 
 	init_graph(&G, n);
 
-	for(e = 0; e < m; e++){
+	int e, u, v, c;
+	for(e = 1; e <= m; e++){
 		scanf("%d%d%d", &u, &v, &c);
 		add_edge(&G, u, v, c);
 	}
 
 	int max_flow = FordFulkerson(&G, 1, n);
 	printf("Max flow: %d", max_flow);
+	printf("\nS:");
+	for(u = 1; u <= n; u++){
+		if(labels[u].dir != 0) printf(" %d", u);
+	}
+
+	printf("\nT:");
+	for(u = 1; u <= n; u++){
+		if(labels[u].dir == 0) printf(" %d", u);
+	}
 
 	return 0;
 }
